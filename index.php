@@ -276,7 +276,7 @@ for ($i = 1; $i < 7; $i++) {
         let temp = <?php echo json_encode($temp_forecast); ?>,
             time = <?php echo json_encode($time_forecast); ?>,
             tMin = <?php echo (min($temp_forecast) - 5); ?>,
-            tMax = <?php echo (min($temp_forecast) + 5); ?>;
+            tMax = <?php echo (max($temp_forecast) + 5); ?>;
         console.log(time)
         console.log(temp)
         console.log(tMin)
