@@ -55,7 +55,7 @@ for ($i = 1; $i < 7; $i++) {
 }
 //var_dump($time_forecast);
 //var_dump($temp_forecast);
-var_dump($day_forecast);
+//var_dump($day_forecast);
 //var_dump($temp_min_forecast);
 //var_dump($temp_max_forecast);
 
@@ -270,6 +270,81 @@ var_dump($day_forecast);
         <a href="https://github.com/fawadrafique/weather-app-v2">GitHub <i class="fab fa-github"> </i>
         </a>
     </footer>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0/dist/chartjs-plugin-datalabels.min.js"></script>
+    <script>
+        let temp = <?php echo json_encode($temp_forecast); ?>,
+            time = <?php echo json_encode($time_forecast); ?>,
+            tMin = <?php echo (min($temp_forecast) - 5); ?>,
+            tMax = <?php echo (min($temp_forecast) + 5); ?>;
+        console.log(time)
+        console.log(temp)
+        console.log(tMin)
+        console.log(tMax)
+
+        let myChart = new Chart(chart, {
+            type: 'line',
+            data: {
+                labels: time,
+                datasets: [{
+                    data: temp,
+                    backgroundColor: '#718096',
+                    borderColor: "#fff",
+                    borderWidth: 2,
+                    lineTension: 0,
+                    pointBorderColor: "#fff",
+                    pointBackgroundColor: "#718096",
+                    pointRadius: 4,
+                    pointBorderWidth: 2,
+                    showTooltips: false
+                }],
+
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                        gridLines: {
+                            display: false
+                        },
+                        ticks: {
+                            fontColor: '#fff'
+                        },
+                    }],
+                    yAxes: [{
+                        gridLines: {
+                            display: false,
+                        },
+                        ticks: {
+                            display: false,
+                            min: tMin,
+                            max: tMax
+                        }
+                    }]
+                },
+                legend: {
+                    display: false
+                },
+                tooltips: {
+                    enabled: false
+                },
+                hover: {
+                    mode: null
+                },
+                plugins: {
+                    // Change options for ALL labels of THIS CHART
+                    datalabels: {
+
+                        color: '#fff',
+                        align: 'top',
+                        formatter: function(value) {
+                            return value + 'º';
+                        }
+                    }
+
+                }
+            }
+        })
+    </script>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBbIMyRDgay42Q3-F91m6fk36g9OJjgrk4&libraries=places">
     </script>
 </body>
