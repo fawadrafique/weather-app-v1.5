@@ -88,38 +88,14 @@ for ($i = 1; $i < 7; $i++) {
 
             <div class="flex flex-wrap w-full lg:w-auto opacity-90">
                 <div class="w-full lg:w-1/2 flex bg-auto">
-                    <div class="p-6 w-full bg-blue-400 text-white relative">
-                        <div class="mx-auto relative z-10">
-                            <button id="toggleMenu" class="relative z-10 block overflow-hidden pr-1 focus:outline-none">
-                                <i class="fas fa-ellipsis-v text-gray-800 font-bold"></i>
-                            </button>
-                            <button id="clickOutside" tabindex="-1" class="fixed inset-0 h-full w-full cursor-default focus:outline-none"></button>
-                            <div id="menuBox" class="absolute top-auto mt-1 py-2 w-72 bg-white rounded-lg shadow-xl hidden">
-                                <form class="block px-4 py-2">
-                                    <input id="inputField" class="p-2 border-t border-b border-l text-gray-800 border-gray-200 bg-white" type="text" placeholder="Search for a city..." placesearch />
-                                    <button id="search" class="bg-yellow-400 text-gray-800 font-bold p-2 px-4 border-yellow-500 focus:outline-none"><i class="fas fa-search"></i>
+                    <div class="p-6 w-full bg-blue-400 text-white">
+                        <div id="searchBox" class="container mx-auto w-full">
+                            <div class="flex justify-end ">
+                                <form class="mt-2 mb-4 flex w-full">
+                                    <input class="w-full p-2 border-t border-b border-l text-gray-800 border-gray-200 bg-white focus:outline-none" type="text" placeholder="Search for a city..." placesearch />
+                                    <button id="searchClose" class="bg-yellow-400 text-gray-800 font-bold p-2 px-4 border-yellow-500 focus:outline-none"><i class="fas fa-search"></i>
                                     </button>
                                 </form>
-                                <div id="menuBox1" class="px-4 py-2 text-gray-800 font-bold flex justify-between items-center">
-                                    <div class="font-normal">
-                                        <span id="city1"></span>
-                                        <span id="temp1" class="block">
-                                        </span>
-                                    </div>
-                                    <div id="icon1">
-                                    </div>
-                                </div>
-                                <div id="menuBox2" class="px-4 py-2 text-gray-800 font-bold flex justify-between  items-center">
-                                    <div class="font-normal">
-                                        <span id="city2"></span>
-                                        <span id="temp2" class="block">
-
-                                        </span>
-                                    </div>
-                                    <div id="icon2">
-                                    </div>
-                                </div>
-
                             </div>
                         </div>
                         <div class="mb-8 mt-6 text-center">
