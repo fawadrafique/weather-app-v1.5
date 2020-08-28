@@ -7,8 +7,19 @@ use SKAgarwal\GoogleApi\PlacesApi;
 //$googlePlaces = new PlacesApi('AIzaSyBbIMyRDgay42Q3-F91m6fk36g9OJjgrk4');
 //$response = $googlePlaces->nearbySearch($location, $radius = null, $params = []);
 //echo $response;
+$geocode_stats = file_get_contents("https://maps.googleapis.com/maps/api/geocode/json?address=" . $_POST["cityname"] . "&sensor=false&key=AIzaSyBbIMyRDgay42Q3-F91m6fk36g9OJjgrk4");
+
+$output_deals = json_decode($geocode_stats);
+//var_dump($output_deals);
+$city = $output_deals->results[0]->address_components[0]->long_name;
+$latLng = $output_deals->results[0]->geometry->location;
+//var_dump($latLng);
+
+$lat = $latLng->lat;
+$lng = $latLng->lng;
+
 $apikey = "94bc76131465087810a5fcee2f66defe";
-$apiCall = "https://api.openweathermap.org/data/2.5/onecall?lat=50.85&lon=4.35&exclude=minutely&units=metric&appid=" . "$apikey";
+$apiCall = "https://api.openweathermap.org/data/2.5/onecall?lat=" . $lat . "&lon=" . $lng . "&exclude=minutely&units=metric&appid=" . $apikey;
 $data = json_decode(file_get_contents($apiCall));
 
 $timestamp = $data->current->dt;
@@ -91,16 +102,16 @@ for ($i = 1; $i < 7; $i++) {
                     <div class="p-6 w-full bg-blue-400 text-white">
                         <div id="searchBox" class="container mx-auto w-full">
                             <div class="flex justify-end ">
-                                <form class="mt-2 mb-4 flex w-full">
-                                    <input class="w-full p-2 border-t border-b border-l text-gray-800 border-gray-200 bg-white focus:outline-none" type="text" placeholder="Search for a city..." placesearch />
-                                    <button id="searchClose" class="bg-yellow-400 text-gray-800 font-bold p-2 px-4 border-yellow-500 focus:outline-none"><i class="fas fa-search"></i>
+                                <form method="get" action="" class="mt-2 mb-4 flex w-full">
+                                    <input id="inputField" class="w-full p-2 border-t border-b border-l text-gray-800 border-gray-200 bg-white focus:outline-none" type="text" name="cityname" placeholder="Search for a city..." placesearch />
+                                    <button id="search" class="bg-yellow-400 text-gray-800 font-bold p-2 px-4 border-yellow-500 focus:outline-none"><i class="fas fa-search"></i>
                                     </button>
                                 </form>
                             </div>
                         </div>
                         <div class="mb-8 mt-6 text-center">
-                            <h2 id="city" class="text-2xl inline-flex leading-none pb-1">Brussels, BE</h2>
-                            <h3 id="day" class="leading-none pb-2 opacity-75"><?php echo date("F d, Y h:i a", $timestamp); ?></h3>
+                            <h2 id="city" class="text-2xl inline-flex leading-none pb-1"><?php echo $city ?></h2>
+                            <h3 id="day" class="opacity-75 text-xs">Updated as of <?php echo date("h:i A", $timestamp); ?></h3>
                         </div>
                         <div class="flex justify-center mb-3">
                             <span id="summary" class="text-2xl"><?php echo $summary ?>
@@ -248,7 +259,59 @@ for ($i = 1; $i < 7; $i++) {
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0/dist/chartjs-plugin-datalabels.min.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBbIMyRDgay42Q3-F91m6fk36g9OJjgrk4&libraries=places">
+    </script>
     <script>
+        let cityAndCountry, longitude, latitude;
+        const inputField = document.querySelector('#inputField');
+        const search = document.querySelector('#search');
+        const searchPlaces = new google.maps.places.SearchBox(inputField);
+        searchPlaces.addListener('places_changed', () => {
+            const place = searchPlaces.getPlaces()[0];
+            let city = place.vicinity;
+            place.address_components.forEach((component) => {
+                if (component.types[0] === 'country') {
+                    country = component.short_name;
+                }
+            });
+            if (place == null) return;
+            latitude = place.geometry.location.lat();
+            longitude = place.geometry.location.lng();
+            console.log(place);
+            cityAndCountry = `${city}, ${country}`;
+        });
+        search.addEventListener('click', (e) => {
+            e.preventDefault();
+            inputField.value = '';
+            let obj = {};
+            obj.lon = longitude;
+            obj.lat = latitude;
+            obj.city = cityAndCountry;
+            console.log(obj);
+            // <?php $data = '<script>document.writeln(obj);</script>';
+                // echo $data;
+                // 
+                ?>
+
+            // fetch('location.php', {
+            //         method: 'POST',
+            //         headers: {
+            //             'Accept': 'application/json',
+            //             'Content-Type': 'application/json'
+            //         },
+            //         body: JSON.stringify(obj)
+            //     })
+            //     .then((res) => {
+            //         res.json();
+            //     })
+            //     .then((data) => {
+            //         console.log(data);
+            //     });
+            //const content = await rawResponse.json();
+
+            //console.log(content);
+
+        });
         let temp = <?php echo json_encode($temp_forecast); ?>,
             time = <?php echo json_encode($time_forecast); ?>,
             tMin = <?php echo (min($temp_forecast) - 5); ?>,
@@ -321,8 +384,7 @@ for ($i = 1; $i < 7; $i++) {
             }
         })
     </script>
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBbIMyRDgay42Q3-F91m6fk36g9OJjgrk4&libraries=places">
-    </script>
+
 </body>
 
 </html>
