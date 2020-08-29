@@ -1,4 +1,9 @@
+<!-- PHP script begin-->
 <?php
+
+// Conditional statement to check if POST empty or not
+// If POST is not empty, get longitude and latitute of the city using Google Geocode API
+// If POST is empty, set default city Brussels and its longitude and latitute.
 if (isset($_POST['cityname']) && !empty($_POST['cityname'])) {
     $location = str_replace(' ', '', $_POST["cityname"]);
     $google_api = "https://maps.googleapis.com/maps/api/geocode/json?address=" . $location . "&sensor=false&key=AIzaSyBbIMyRDgay42Q3-F91m6fk36g9OJjgrk4";
@@ -13,7 +18,8 @@ if (isset($_POST['cityname']) && !empty($_POST['cityname'])) {
     $city = 'Brussels';
 }
 
-
+// Get weather forecast of the city using OpenWeatherMap API.
+// Get the random image of the city using Unsplash API, also get source link and name of iamge uploader.
 $owm_apiCall = "https://api.openweathermap.org/data/2.5/onecall?lat=" . $lat . "&lon=" . $lng . "&exclude=minutely&units=metric&appid=94bc76131465087810a5fcee2f66defe";
 $data = json_decode(file_get_contents($owm_apiCall));
 $unsplash_apiCall = "https://api.unsplash.com/search/photos?page=1&query=" . $city . "&order_by=popular&orientation=landscape&client_id=jRPGWBPEGuRHvLEve0t7QHqzx0a7NsWSv_FY-atuTWs";
@@ -23,6 +29,7 @@ $background = $data_unsplash->results[$rand]->urls->regular;
 $user_name = $data_unsplash->results[$rand]->user->name;
 $image_link = $data_unsplash->results[$rand]->links->html;
 
+// Get weather data
 $timestamp = $data->current->dt;
 $hour = date("H", $timestamp);
 $timestamp_sunrise = $data->current->sunrise;
@@ -39,11 +46,13 @@ $uvindex = $data->current->uvi;
 $humidity = $data->current->humidity;
 $wind = round($data->current->wind_speed * 3.5997);
 
+//Check for day or night icon
 if ((int)$hour >= (int)$sunrise && (int)$hour < (int)$sunset) {
     $icon = "wi wi-owm-day-" . "$icon_id";
 } else {
     $icon = "wi wi-owm-night-" . "$icon_id";
 }
+// Weather forecast of next 6 days and save that to an array
 $time_forecast = [];
 $temp_forecast = [];
 $temp_min_forecast = [];
@@ -67,12 +76,12 @@ for ($i = 1; $i < 7; $i++) {
 }
 
 ?>
-
-
+<!-- PHP script end -->
 
 
 <!DOCTYPE html>
 <html lang="en">
+<!-- Link of stylesheet and weather icons -->
 
 <head>
     <meta charset="UTF-8" />
@@ -83,14 +92,16 @@ for ($i = 1; $i < 7; $i++) {
     <title>Weather Station</title>
 </head>
 
+<!-- HTML main body tag -->
 
 <body class="flex flex-col h-screen">
     <div class="flex-grow">
         <div class="w-full mt-16 lg:mt-56 lg:px-10 justify-center container mx-auto">
-
+            <!-- Weather app wr container -->
             <div class="flex flex-wrap w-full lg:w-auto opacity-90">
                 <div class="w-full lg:w-1/2 flex bg-auto">
                     <div class="p-6 w-full bg-blue-400 text-white">
+                        <!-- City search input field form -->
                         <div class="container mx-auto w-full">
                             <div class="flex justify-end ">
                                 <form method="post" action="" class="mt-2 mb-4 flex w-full">
@@ -100,14 +111,17 @@ for ($i = 1; $i < 7; $i++) {
                                 </form>
                             </div>
                         </div>
+                        <!-- City name and time of weather report -->
                         <div class="mb-8 mt-6 text-center">
                             <h2 class="text-2xl inline-flex leading-none pb-1"><?php echo $city ?></h2>
                             <h3 class="opacity-75 text-xs">Updated as of <?php echo date("h:i A", $timestamp); ?></h3>
                         </div>
+                        <!-- Summary of the current weather -->
                         <div class="flex justify-center mb-3">
                             <span class="text-2xl"><?php echo $summary ?>
                             </span>
                         </div>
+                        <!-- Temperature status and icon of the current summary -->
                         <div class="grid grid-cols-2 mb-3">
                             <div class="flex justify-end text-6xl font-bold p-1 pr-3 border-r">
                                 <i class="<?php echo $icon ?>"></i>
@@ -117,12 +131,14 @@ for ($i = 1; $i < 7; $i++) {
                                 <span class="text-3xl font-weight-bolder align-top">ºC</span>
                             </div>
                         </div>
+                        <!-- Minimum and maximum temperature -->
                         <div class="flex justify-center mb-12">
                             <span class="leading-none font-weight-bolder ">L <strong class="text-lg"><?php echo $temp_min ?>º</strong> - H
                                 <strong class="text-lg"><?php echo $temp_max ?></strong>º</span>
                         </div>
+                        <!-- Forecast for next 6 days -->
                         <div class="grid grid-flow-col grid-cols-3 grid-rows-2 md:grid-cols-6 md:grid-rows-1 gap-1">
-
+                            <!-- Next day weather report. Displays icon, day and minimum and maximum temperature-->
                             <div class="bg-gray-900">
                                 <div class="text-center mt-1">
                                     <span class="font-normal block"><?php echo $day_forecast[0]; ?></span>
@@ -135,7 +151,7 @@ for ($i = 1; $i < 7; $i++) {
                                     </span>
                                 </div>
                             </div>
-
+                            <!-- 2nd day weather report. Displays icon, day and minimum and maximum temperature-->
                             <div class="bg-gray-900">
                                 <div class="text-center mt-1">
                                     <span class="font-normal block"><?php echo $day_forecast[1]; ?></span>
@@ -148,7 +164,7 @@ for ($i = 1; $i < 7; $i++) {
                                     </span>
                                 </div>
                             </div>
-
+                            <!-- Third day weather report. Displays icon, day and minimum and maximum temperature-->
                             <div class="bg-gray-900">
                                 <div class="text-center mt-1">
                                     <span class="font-normal block"><?php echo $day_forecast[2]; ?></span>
@@ -161,7 +177,7 @@ for ($i = 1; $i < 7; $i++) {
                                     </span>
                                 </div>
                             </div>
-
+                            <!-- Fourth day weather report. Displays icon, day and minimum and maximum temperature-->
                             <div class="bg-gray-900">
                                 <div class="text-center mt-1">
                                     <span class="font-normal block"><?php echo $day_forecast[3]; ?></span>
@@ -174,7 +190,7 @@ for ($i = 1; $i < 7; $i++) {
                                     </span>
                                 </div>
                             </div>
-
+                            <!-- Fifth day weather report. Displays icon, day and minimum and maximum temperature-->
                             <div class="bg-gray-900">
                                 <div class="text-center mt-1">
                                     <span class="font-normal block"><?php echo $day_forecast[4]; ?></span>
@@ -187,7 +203,7 @@ for ($i = 1; $i < 7; $i++) {
                                     </span>
                                 </div>
                             </div>
-
+                            <!-- Sixth day weather report. Displays icon, day and minimum and maximum temperature-->
                             <div class="bg-gray-900">
                                 <div class="text-center mt-1">
                                     <span class="font-normal block"><?php echo $day_forecast[5]; ?></span>
@@ -200,11 +216,10 @@ for ($i = 1; $i < 7; $i++) {
                                     </span>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
-
+                <!-- Details of current weather like feelslike, UV index, humidity, wind speed and line chart graph for next 24 hours -->
                 <div class="w-full lg:w-1/2 flex ml-0">
                     <div class="lg:my-4 bg-gray-800 text-white p-8 w-full">
                         <canvas id="chart" class="mb-5"></canvas>
@@ -243,15 +258,15 @@ for ($i = 1; $i < 7; $i++) {
             </div>
         </div>
     </div>
+    <!-- Footer of the app, contains link to GitHub repository. Credits of background image and its source -->
     <footer class="flex justify-between text-blue-400 px-5">
         <span id="footer">
-
             Photo by: <a class="underline" href='<?php echo $image_link; ?>'><?php echo $user_name; ?></a> on <a class="underline" href='https://unsplash.com/'>Unsplash</a>
-
         </span>
         <a href="https://github.com/fawadrafique/weather-app-v1.5">GitHub <i class="fab fa-github"> </i>
         </a>
     </footer>
+    <!-- JS script to get city suggestions via Google Places API and Chart display constructor-->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0/dist/chartjs-plugin-datalabels.min.js"></script>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBbIMyRDgay42Q3-F91m6fk36g9OJjgrk4&libraries=places">
