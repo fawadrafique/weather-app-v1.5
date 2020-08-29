@@ -260,7 +260,7 @@ for ($i = 1; $i < 7; $i++) {
     </div>
     <!-- Footer of the app, contains link to GitHub repository. Credits of background image and its source -->
     <footer class="flex justify-between text-blue-400 px-5">
-        <span id="footer">
+        <span>
             Photo by: <a class="underline" href='<?php echo $image_link; ?>'><?php echo $user_name; ?></a> on <a class="underline" href='https://unsplash.com/'>Unsplash</a>
         </span>
         <a href="https://github.com/fawadrafique/weather-app-v1.5">GitHub <i class="fab fa-github"> </i>
