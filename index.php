@@ -1,25 +1,23 @@
 <?php
-//require __DIR__ . '/vendor/autoload.php';
-////$location = "Brussels";
+if (isset($_POST['cityname']) && !empty($_POST['cityname'])) {
+    $location = str_replace(' ', '', $_POST["cityname"]);
+    $google_api = "https://maps.googleapis.com/maps/api/geocode/json?address=" . $location . "&sensor=false&key=AIzaSyBbIMyRDgay42Q3-F91m6fk36g9OJjgrk4";
+    echo $google_api;
+    $geocode_stats = file_get_contents($google_api);
+    $output_deals = json_decode($geocode_stats);
+    var_dump($output_deals);
+    $city = $output_deals->results[0]->address_components[0]->long_name;
+    $latLng = $output_deals->results[0]->geometry->location;
+    $lat = $latLng->lat;
+    $lng = $latLng->lng;
+} else {
+    $lat = 50.85;
+    $lng = 4.35;
+    $city = 'Brussels';
+}
 
-use SKAgarwal\GoogleApi\PlacesApi;
 
-//$googlePlaces = new PlacesApi('AIzaSyBbIMyRDgay42Q3-F91m6fk36g9OJjgrk4');
-//$response = $googlePlaces->nearbySearch($location, $radius = null, $params = []);
-//echo $response;
-$geocode_stats = file_get_contents("https://maps.googleapis.com/maps/api/geocode/json?address=" . $_POST["cityname"] . "&sensor=false&key=AIzaSyBbIMyRDgay42Q3-F91m6fk36g9OJjgrk4");
-
-$output_deals = json_decode($geocode_stats);
-//var_dump($output_deals);
-$city = $output_deals->results[0]->address_components[0]->long_name;
-$latLng = $output_deals->results[0]->geometry->location;
-//var_dump($latLng);
-
-$lat = $latLng->lat;
-$lng = $latLng->lng;
-
-$apikey = "94bc76131465087810a5fcee2f66defe";
-$apiCall = "https://api.openweathermap.org/data/2.5/onecall?lat=" . $lat . "&lon=" . $lng . "&exclude=minutely&units=metric&appid=" . $apikey;
+$apiCall = "https://api.openweathermap.org/data/2.5/onecall?lat=" . $lat . "&lon=" . $lng . "&exclude=minutely&units=metric&appid=94bc76131465087810a5fcee2f66defe";
 $data = json_decode(file_get_contents($apiCall));
 
 $timestamp = $data->current->dt;
@@ -64,17 +62,7 @@ for ($i = 1; $i < 7; $i++) {
     array_push($temp_min_forecast, round($data->daily[$i]->temp->min));
     array_push($temp_max_forecast, round($data->daily[$i]->temp->max));
 }
-//var_dump($time_forecast);
-//var_dump($temp_forecast);
-//var_dump($day_forecast);
-//var_dump($temp_min_forecast);
-//var_dump($temp_max_forecast);
 
-
-
-//echo $temp;
-//echo $wind;
-//var_dump($data);
 ?>
 
 
@@ -89,7 +77,7 @@ for ($i = 1; $i < 7; $i++) {
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
     <link rel="stylesheet" href="./src/style/styles.css" />
     <link rel="stylesheet" href="./src/style/weather-icons.min.css">
-    <title>Weather Forecast</title>
+    <title>Weather Station</title>
 </head>
 
 
@@ -102,10 +90,10 @@ for ($i = 1; $i < 7; $i++) {
                     <div class="p-6 w-full bg-blue-400 text-white">
                         <div id="searchBox" class="container mx-auto w-full">
                             <div class="flex justify-end ">
-                                <form method="get" action="" class="mt-2 mb-4 flex w-full">
-                                    <input id="inputField" class="w-full p-2 border-t border-b border-l text-gray-800 border-gray-200 bg-white focus:outline-none" type="text" name="cityname" placeholder="Search for a city..." placesearch />
-                                    <button id="search" class="bg-yellow-400 text-gray-800 font-bold p-2 px-4 border-yellow-500 focus:outline-none"><i class="fas fa-search"></i>
-                                    </button>
+                                <form method="post" action="" class="mt-2 mb-4 flex w-full">
+                                    <input id="inputField" class="w-full p-2 border-t border-b border-l text-gray-800 border-gray-200 bg-white focus:outline-none" type="text" name="cityname" placeholder="Search for a city..." />
+                                    <input id="search" type="submit" class="bg-yellow-400 text-gray-800 font-bold p-2 px-4 border-yellow-500 focus:outline-none">
+                                    </input>
                                 </form>
                             </div>
                         </div>
@@ -277,49 +265,20 @@ for ($i = 1; $i < 7; $i++) {
             if (place == null) return;
             latitude = place.geometry.location.lat();
             longitude = place.geometry.location.lng();
-            console.log(place);
             cityAndCountry = `${city}, ${country}`;
         });
         search.addEventListener('click', (e) => {
-            e.preventDefault();
-            inputField.value = '';
-            let obj = {};
-            obj.lon = longitude;
-            obj.lat = latitude;
-            obj.city = cityAndCountry;
-            console.log(obj);
-            // <?php $data = '<script>document.writeln(obj);</script>';
-                // echo $data;
-                // 
-                ?>
-
-            // fetch('location.php', {
-            //         method: 'POST',
-            //         headers: {
-            //             'Accept': 'application/json',
-            //             'Content-Type': 'application/json'
-            //         },
-            //         body: JSON.stringify(obj)
-            //     })
-            //     .then((res) => {
-            //         res.json();
-            //     })
-            //     .then((data) => {
-            //         console.log(data);
-            //     });
-            //const content = await rawResponse.json();
-
-            //console.log(content);
-
+            //e.preventDefault();
+            //inputField.value = '';
         });
         let temp = <?php echo json_encode($temp_forecast); ?>,
             time = <?php echo json_encode($time_forecast); ?>,
             tMin = <?php echo (min($temp_forecast) - 5); ?>,
             tMax = <?php echo (max($temp_forecast) + 5); ?>;
-        console.log(time)
-        console.log(temp)
-        console.log(tMin)
-        console.log(tMax)
+        // console.log(time)
+        // console.log(temp)
+        // console.log(tMin)
+        // console.log(tMax)
 
         let myChart = new Chart(chart, {
             type: 'line',
