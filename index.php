@@ -2,10 +2,9 @@
 if (isset($_POST['cityname']) && !empty($_POST['cityname'])) {
     $location = str_replace(' ', '', $_POST["cityname"]);
     $google_api = "https://maps.googleapis.com/maps/api/geocode/json?address=" . $location . "&sensor=false&key=AIzaSyBbIMyRDgay42Q3-F91m6fk36g9OJjgrk4";
-    echo $google_api;
     $geocode_stats = file_get_contents($google_api);
     $output_deals = json_decode($geocode_stats);
-    var_dump($output_deals);
+    //var_dump($output_deals);
     $city = $output_deals->results[0]->address_components[0]->long_name;
     $latLng = $output_deals->results[0]->geometry->location;
     $lat = $latLng->lat;
@@ -267,18 +266,10 @@ for ($i = 1; $i < 7; $i++) {
             longitude = place.geometry.location.lng();
             cityAndCountry = `${city}, ${country}`;
         });
-        search.addEventListener('click', (e) => {
-            //e.preventDefault();
-            //inputField.value = '';
-        });
         let temp = <?php echo json_encode($temp_forecast); ?>,
             time = <?php echo json_encode($time_forecast); ?>,
             tMin = <?php echo (min($temp_forecast) - 5); ?>,
             tMax = <?php echo (max($temp_forecast) + 5); ?>;
-        // console.log(time)
-        // console.log(temp)
-        // console.log(tMin)
-        // console.log(tMax)
 
         let myChart = new Chart(chart, {
             type: 'line',
@@ -329,7 +320,6 @@ for ($i = 1; $i < 7; $i++) {
                     mode: null
                 },
                 plugins: {
-                    // Change options for ALL labels of THIS CHART
                     datalabels: {
 
                         color: '#fff',
