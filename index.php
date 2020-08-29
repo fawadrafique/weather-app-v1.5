@@ -87,40 +87,40 @@ for ($i = 1; $i < 7; $i++) {
             <div class="flex flex-wrap w-full lg:w-auto opacity-90">
                 <div class="w-full lg:w-1/2 flex bg-auto">
                     <div class="p-6 w-full bg-blue-400 text-white">
-                        <div id="searchBox" class="container mx-auto w-full">
+                        <div class="container mx-auto w-full">
                             <div class="flex justify-end ">
                                 <form method="post" action="" class="mt-2 mb-4 flex w-full">
                                     <input id="inputField" class="w-full p-2 border-t border-b border-l text-gray-800 border-gray-200 bg-white focus:outline-none" type="text" name="cityname" placeholder="Search for a city..." />
-                                    <input id="search" type="submit" class="bg-yellow-400 text-gray-800 font-bold p-2 px-4 border-yellow-500 focus:outline-none">
+                                    <input type="submit" class="bg-yellow-400 text-gray-800 font-bold p-2 px-4 border-yellow-500 focus:outline-none">
                                     </input>
                                 </form>
                             </div>
                         </div>
                         <div class="mb-8 mt-6 text-center">
-                            <h2 id="city" class="text-2xl inline-flex leading-none pb-1"><?php echo $city ?></h2>
-                            <h3 id="day" class="opacity-75 text-xs">Updated as of <?php echo date("h:i A", $timestamp); ?></h3>
+                            <h2 class="text-2xl inline-flex leading-none pb-1"><?php echo $city ?></h2>
+                            <h3 class="opacity-75 text-xs">Updated as of <?php echo date("h:i A", $timestamp); ?></h3>
                         </div>
                         <div class="flex justify-center mb-3">
-                            <span id="summary" class="text-2xl"><?php echo $summary ?>
+                            <span class="text-2xl"><?php echo $summary ?>
                             </span>
                         </div>
                         <div class="grid grid-cols-2 mb-3">
-                            <div id="icon" class="flex justify-end text-6xl font-bold p-1 pr-3 border-r">
+                            <div class="flex justify-end text-6xl font-bold p-1 pr-3 border-r">
                                 <i class="<?php echo $icon ?>"></i>
                             </div>
                             <div class="flex justify-start p-1 pl-2">
-                                <span id="temperature" class="leading-none text-6xl font-weight-bolder"><?php echo $temp ?></span>
+                                <span class="leading-none text-6xl font-weight-bolder"><?php echo $temp ?></span>
                                 <span class="text-3xl font-weight-bolder align-top">ºC</span>
                             </div>
                         </div>
                         <div class="flex justify-center mb-12">
-                            <span id="minmaxT" class="leading-none font-weight-bolder ">L <strong class="text-lg"><?php echo $temp_min ?>º</strong> - H
+                            <span class="leading-none font-weight-bolder ">L <strong class="text-lg"><?php echo $temp_min ?>º</strong> - H
                                 <strong class="text-lg"><?php echo $temp_max ?></strong>º</span>
                         </div>
                         <div class="grid grid-flow-col grid-cols-3 grid-rows-2 md:grid-cols-6 md:grid-rows-1 gap-1">
 
                             <div class="bg-gray-900">
-                                <div id="day1" class="text-center mt-1">
+                                <div class="text-center mt-1">
                                     <span class="font-normal block"><?php echo $day_forecast[0]; ?></span>
                                     <span class="flex justify-center text-3xl">
                                         <i class="wi wi-owm-<?php echo $icon_forecast[0]; ?>"></i>
@@ -133,7 +133,7 @@ for ($i = 1; $i < 7; $i++) {
                             </div>
 
                             <div class="bg-gray-900">
-                                <div id="day2" class="text-center mt-1">
+                                <div class="text-center mt-1">
                                     <span class="font-normal block"><?php echo $day_forecast[1]; ?></span>
                                     <span class="flex justify-center text-3xl">
                                         <i class="wi wi-owm-<?php echo $icon_forecast[1]; ?>"></i>
@@ -146,7 +146,7 @@ for ($i = 1; $i < 7; $i++) {
                             </div>
 
                             <div class="bg-gray-900">
-                                <div id="day3" class="text-center mt-1">
+                                <div class="text-center mt-1">
                                     <span class="font-normal block"><?php echo $day_forecast[2]; ?></span>
                                     <span class="flex justify-center text-3xl">
                                         <i class="wi wi-owm-<?php echo $icon_forecast[2]; ?>"></i>
@@ -159,7 +159,7 @@ for ($i = 1; $i < 7; $i++) {
                             </div>
 
                             <div class="bg-gray-900">
-                                <div id="day4" class="text-center mt-1">
+                                <div class="text-center mt-1">
                                     <span class="font-normal block"><?php echo $day_forecast[3]; ?></span>
                                     <span class="flex justify-center text-3xl">
                                         <i class="wi wi-owm-<?php echo $icon_forecast[3]; ?>"></i>
@@ -172,7 +172,7 @@ for ($i = 1; $i < 7; $i++) {
                             </div>
 
                             <div class="bg-gray-900">
-                                <div id="day5" class="text-center mt-1">
+                                <div class="text-center mt-1">
                                     <span class="font-normal block"><?php echo $day_forecast[4]; ?></span>
                                     <span class="flex justify-center text-3xl">
                                         <i class="wi wi-owm-<?php echo $icon_forecast[4]; ?>"></i>
@@ -185,7 +185,7 @@ for ($i = 1; $i < 7; $i++) {
                             </div>
 
                             <div class="bg-gray-900">
-                                <div id="day6" class="text-center mt-1">
+                                <div class="text-center mt-1">
                                     <span class="font-normal block"><?php echo $day_forecast[5]; ?></span>
                                     <span class="flex justify-center text-3xl">
                                         <i class="wi wi-owm-<?php echo $icon_forecast[5]; ?>"></i>
@@ -210,28 +210,28 @@ for ($i = 1; $i < 7; $i++) {
                                 <span class="block text-90">
                                     Real feel
                                 </span>
-                                <span id="feelslike"><?php echo $feelslike ?>º</span>
+                                <span><?php echo $feelslike ?>º</span>
                             </div>
                             <div class="bg-gray-600 text-center p-5">
                                 <i class="wi wi-day-sunny text-3xl"></i>
                                 <span class="block text-90">
                                     UV index
                                 </span>
-                                <span id="uvindex" class="w-auto"><?php echo $uvindex ?></span>
+                                <span class="w-auto"><?php echo $uvindex ?></span>
                             </div>
                             <div class="bg-gray-600 text-center p-5">
                                 <i class="fas fa-humidity fa-2x"></i>
                                 <span class="block text-90">
                                     Humidity
                                 </span>
-                                <span id="humidityPercent"><?php echo $humidity ?> %</span>
+                                <span><?php echo $humidity ?> %</span>
                             </div>
                             <div class="bg-gray-600 text-center p-5">
                                 <i class="fas fa-wind fa-2x"></i>
                                 <span class="block text-90">
                                     Wind
                                 </span>
-                                <span id="windSpeed"><?php echo $wind ?> km/h</span>
+                                <span><?php echo $wind ?> km/h</span>
                             </div>
                         </div>
                     </div>
