@@ -2,9 +2,7 @@
 if (isset($_POST['cityname']) && !empty($_POST['cityname'])) {
     $location = str_replace(' ', '', $_POST["cityname"]);
     $google_api = "https://maps.googleapis.com/maps/api/geocode/json?address=" . $location . "&sensor=false&key=AIzaSyBbIMyRDgay42Q3-F91m6fk36g9OJjgrk4";
-    $geocode_stats = file_get_contents($google_api);
-    $output_deals = json_decode($geocode_stats);
-    //var_dump($output_deals);
+    $output_deals = json_decode(file_get_contents($google_api));
     $city = $output_deals->results[0]->address_components[0]->long_name;
     $latLng = $output_deals->results[0]->geometry->location;
     $lat = $latLng->lat;
@@ -16,8 +14,14 @@ if (isset($_POST['cityname']) && !empty($_POST['cityname'])) {
 }
 
 
-$apiCall = "https://api.openweathermap.org/data/2.5/onecall?lat=" . $lat . "&lon=" . $lng . "&exclude=minutely&units=metric&appid=94bc76131465087810a5fcee2f66defe";
-$data = json_decode(file_get_contents($apiCall));
+$owm_apiCall = "https://api.openweathermap.org/data/2.5/onecall?lat=" . $lat . "&lon=" . $lng . "&exclude=minutely&units=metric&appid=94bc76131465087810a5fcee2f66defe";
+$data = json_decode(file_get_contents($owm_apiCall));
+$unsplash_apiCall = "https://api.unsplash.com/search/photos?page=1&query=" . $city . "&order_by=popular&orientation=landscape&client_id=jRPGWBPEGuRHvLEve0t7QHqzx0a7NsWSv_FY-atuTWs";
+$data_unsplash = json_decode(file_get_contents($unsplash_apiCall));
+$rand = rand(0, 9);
+$background = $data_unsplash->results[$rand]->urls->regular;
+$user_name = $data_unsplash->results[$rand]->user->name;
+$image_link = $data_unsplash->results[$rand]->links->html;
 
 $timestamp = $data->current->dt;
 $hour = date("H", $timestamp);
@@ -239,9 +243,13 @@ for ($i = 1; $i < 7; $i++) {
             </div>
         </div>
     </div>
-    <footer class="flex justify-between text-gray-900 px-5">
-        <span id="footer"></span>
-        <a href="https://github.com/fawadrafique/weather-app-v2">GitHub <i class="fab fa-github"> </i>
+    <footer class="flex justify-between text-blue-400 px-5">
+        <span id="footer">
+
+            Photo by: <a class="underline" href='<?php echo $image_link; ?>'><?php echo $user_name; ?></a> on <a class="underline" href='https://unsplash.com/'>Unsplash</a>
+
+        </span>
+        <a href="https://github.com/fawadrafique/weather-app-v1.5">GitHub <i class="fab fa-github"> </i>
         </a>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
@@ -266,6 +274,9 @@ for ($i = 1; $i < 7; $i++) {
             longitude = place.geometry.location.lng();
             cityAndCountry = `${city}, ${country}`;
         });
+        document.body.style.backgroundSize = "cover";
+        document.body.style.backgroundImage = "url(<?php echo $background; ?>)";
+
         let temp = <?php echo json_encode($temp_forecast); ?>,
             time = <?php echo json_encode($time_forecast); ?>,
             tMin = <?php echo (min($temp_forecast) - 5); ?>,
