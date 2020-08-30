@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/fawadrafique/weather-app-v1.5#readme",
   "dependencies": {
+    "@fullhuman/postcss-purgecss": "^2.3.0",
     "@tailwindcss/typography": "^0.2.0",
     "autoprefixer": "^9.8.6",
     "postcss-cli": "^7.1.1",
