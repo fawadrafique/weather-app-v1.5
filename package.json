@@ -1,0 +1,27 @@
+{
+  "name": "weather-app-v1.5",
+  "version": "1.0.0",
+  "description": "- Repository name: `weather-app-v1.5`\r - Type of Challenge: `learning`\r - Written in : `HTML, CSS, JS and PHP`\r - Built with: `Tailwind and VS Code`\r - Deployments: [GitHub Page](https://fawadrafique.github.io/weather-app-v1.5/)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fawadrafique/weather-app-v1.5.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fawadrafique/weather-app-v1.5/issues"
+  },
+  "homepage": "https://github.com/fawadrafique/weather-app-v1.5#readme",
+  "dependencies": {
+    "@tailwindcss/typography": "^0.2.0",
+    "autoprefixer": "^9.8.6",
+    "postcss-cli": "^7.1.1",
+    "postcss-import": "^12.0.1",
+    "tailwindcss": "^1.7.6"
+  }
+}
