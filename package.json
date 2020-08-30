@@ -4,7 +4,7 @@
   "description": "- Repository name: `weather-app-v1.5`\r - Type of Challenge: `learning`\r - Written in : `HTML, CSS, JS and PHP`\r - Built with: `Tailwind and VS Code`\r - Deployments: [GitHub Page](https://fawadrafique.github.io/weather-app-v1.5/)",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build-css": "tailwindcss build src/style/tailwind.css -o src/style/styles.css"
   },
   "repository": {
     "type": "git",
