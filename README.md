@@ -4,7 +4,6 @@
 - Type of Challenge: `learning`
 - Written in : `HTML, CSS, JS and PHP`
 - Built with: `Tailwind and VS Code`
-- Deployments: [GitHub Page](https://fawadrafique.github.io/weather-app-v1.5/)
 
 This is version 1.5 of the previously made weather app. This app is made using PHP.
 
